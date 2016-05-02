@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Created by MOM on 4/28/16.
@@ -39,5 +40,17 @@ public class FragmentA extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onPause() {
+        Toast.makeText(getActivity(), "Fragment A is paused", Toast.LENGTH_LONG).show();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Toast.makeText(getActivity(), "We're back and Running", Toast.LENGTH_SHORT).show();
+        super.onResume();
     }
 }

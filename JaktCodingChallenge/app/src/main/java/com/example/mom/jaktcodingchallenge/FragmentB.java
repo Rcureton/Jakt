@@ -1,6 +1,7 @@
 package com.example.mom.jaktcodingchallenge;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import java.util.TimerTask;
  */
 public class FragmentB extends Fragment {
 
+    public ProgressBar pb;
     public FragmentB(){
 
     }
@@ -31,33 +33,10 @@ public class FragmentB extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-               final ProgressBar pb= (ProgressBar)fragmentB.findViewById(R.id.progressBar);
-
-                final Handler handler= new Handler();
-                final Thread timer= new Thread(){
-                    @Override
-                    public void run() {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                pb.setVisibility(View.VISIBLE);
-                                try {
-                                    Thread.sleep(5000);
-                                } catch (InterruptedException e) {
-                                   handler.post(new Runnable() {
-                                       @Override
-                                       public void run() {
-                                           pb.setVisibility(View.GONE);
-                                       }
-                                   });
-                                }
-
-                            }
-                        });
-                    }
-                };timer.start();
-
-
+               pb= (ProgressBar)fragmentB.findViewById(R.id.progressBar);
+                pb.setVisibility(View.VISIBLE);
+                FragmentAsync fragmentAsync= new FragmentAsync();
+                fragmentAsync.execute();
             }
         });
 
@@ -67,6 +46,26 @@ public class FragmentB extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
 
+    }
+    public class FragmentAsync extends AsyncTask<Integer, Integer, String>{
+
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "Task Completed";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            pb.setVisibility(View.GONE);
+
+        }
     }
 
 }
